@@ -2,24 +2,76 @@
 <html>
   <head>
     <script src="jquery.js"></script>
-    <script src="data_generator.js"></script>
+    <script src="moment.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="papier-1.1.0.min.css">
   </head>
   <body>
+    <header class="bg-blue">
+      <h1 id="h1" class="center">Twittler</h1>
+    </header>
+    <section id="userTweets">
+      <!-- create your own tweets area-->
+        <textarea id="tweetBox" maxlength="140" placeholder="Tweet..."></textarea>
+        <br><button id="submitTweet" class="tweetMore bg-blue">Tweet</button>
+        <button id="btnMore" class="tweetMore bg-blue">Back</button>
+    </section>
+    <section id="showTweets">
+      <!--holds all tweets-->
+    </section>
+    <section id="indivTweets">
+      <!--individual tweets-->
+    </section>
+    <footer></footer>
+    <!--page was loading before data_generator.js so I moved it down-->
+    <script src="data_generator.js"></script>
     <script>
+    $(document).ready(function(){
+       //puts together the usernames and random tweets then appends to #showTweets div
+       var postTweets = function(){
+         var index = streams.home.length - 1;
+         while(index >= 0){
+           var tweet = streams.home[index];
+           var $tweet = $('<div class="tweets depth-2 round-2"></div>');
+           var date = moment(tweet.created_at).fromNow();
+           $tweet.html('@' + '<a class="user" href="#">' +tweet.user + '</a>' + " " +'<span id="tweetDate">' + date + '</span><br><br>' + tweet.message  + " " + "<hr>");
+           $tweet.prependTo('#showTweets');
+           index -= 1;
+         }
+          setTimeout(postTweets, 6500)
 
-      $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+       };
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
+       $(document).on('click', '.user',function(){
+         userTimeline($(this).html());
+         $('#showTweets').hide();
+       })
 
+       //user can tweet
+       $('#submitTweet').on('click',function(){
+         writeTweet($('textarea').val());
+       });
+
+       function userTimeline(username){
+         var userName = username;
+         console.log(streams.users[userName]);
+         $('#indivTweets').empty();
+         var i = 0
+         while (i <= streams.users[userName].length - 1){
+           var $tweet = $('<div class="tweets depth-2 round-2"></div>');
+           var tweet = streams.users[userName][i];
+           var date = moment(tweet.created_at).fromNow();
+           $tweet.html('<a class="user" href="#">' + '@' +tweet.user + '</a>' + " " +'<span id="tweetDate">' + date + '</span><br><br>' + tweet.message  + " " + "<hr>");
+           $tweet.prependTo('#indivTweets');
+           i++;
+         }
+
+       $('#btnMore').click(function(){
+         $('#indivTweets').empty();
+         $('#showTweets').show();
+       })
+     }
+       postTweets();
       });
 
     </script>

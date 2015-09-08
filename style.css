@@ -1,0 +1,60 @@
+body {
+  background-color: whitesmoke;
+}
+
+#h1{
+  margin: 0;
+  padding-top: 45px;
+  font-size: 100px;
+}
+header {
+  margin-bottom: 50px;
+  height: 200px;
+  display: flex;
+
+}
+
+#tweetBox {
+  width: 200px;
+  height: 100px;
+  margin-top: 10px;
+  margin-left: 57px;
+}
+
+#userTweets {
+  float: left;
+  margin-left: 150px;
+}
+
+#showTweets {
+  width: 700px;
+  margin: auto;
+  float:right;
+  margin-right: 100px;
+}
+
+#indivTweets {
+  width: 700px;
+  margin: auto;
+  float:right;
+  margin-right: 100px;
+}
+
+.tweets {
+  width: 400px;
+  height: 90px;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: white;
+  padding: 10px;
+}
+
+.tweetMore {
+  cursor: pointer;
+  margin-left: 45px;
+}
+
+#tweetDate {
+  float: right;
+}
