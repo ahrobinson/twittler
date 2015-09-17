@@ -14,7 +14,7 @@
       <!-- create your own tweets area-->
         <textarea id="tweetBox" maxlength="140" placeholder="Tweet..."></textarea>
         <br><button id="submitTweet" class="tweetMore bg-blue">Tweet</button>
-        <button id="btnMore" class="tweetMore bg-blue">Back</button>
+        <button id="back" class="tweetMore bg-blue">Back</button>
     </section>
     <section id="showTweets">
       <!--holds all tweets-->
@@ -28,33 +28,35 @@
     <script>
     $(document).ready(function(){
        //puts together the usernames and random tweets then appends to #showTweets div
-       var postTweets = function(){
+
+       var post = setInterval(postTweets, 6500);
+      function postTweets(){
          var index = streams.home.length - 1;
          while(index >= 0){
            var tweet = streams.home[index];
            var $tweet = $('<div class="tweets depth-2 round-2"></div>');
            var date = moment(tweet.created_at).fromNow();
            $tweet.html('@' + '<a class="user" href="#">' +tweet.user + '</a>' + " " +'<span id="tweetDate">' + date + '</span><br><br>' + tweet.message  + " " + "<hr>");
-           $tweet.prependTo('#showTweets');
+           $tweet.appendTo('#showTweets');
            index -= 1;
          }
-          setTimeout(postTweets, 6500)
-
+          post;
        };
+       postTweets();
+
 
        $(document).on('click', '.user',function(){
          userTimeline($(this).html());
-         $('#showTweets').hide();
+         $('#showTweets').empty();
+         clearInterval(post);
+
        })
 
-       //user can tweet
-       $('#submitTweet').on('click',function(){
-         writeTweet($('textarea').val());
-       });
+
 
        function userTimeline(username){
          var userName = username;
-         console.log(streams.users[userName]);
+        //  console.log(streams.users[userName]);
         //  $('#indivTweets').empty();
          var i = 0
          while (i <= streams.users[userName].length - 1){
@@ -65,14 +67,22 @@
            $tweet.prependTo('#indivTweets');
            i++;
          }
+        // setInterval(userTimeline(username),6500);
+       }
 
-       $('#btnMore').click(function(){
-         $('#indivTweets').empty();
-         $('#showTweets').show();
-       })
-     }
+
+     //user can tweet
+     $('#submitTweet').on('click',function(){
+       writeTweet($('textarea').val());
+     });
+
+     $('#back').click(function(){
+       $('#indivTweets').empty();
        postTweets();
-      });
+     })
+
+
+   });
 
     </script>
   </body>
