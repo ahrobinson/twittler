@@ -49,7 +49,6 @@
          userTimeline($(this).html());
          $('#showTweets').empty();
          clearInterval(post);
-
        })
 
 
@@ -78,8 +77,9 @@
 
      $('#back').click(function(){
        $('#indivTweets').empty();
+       post = setInterval(postTweets, 6500);
        postTweets();
-     })
+     });
 
 
    });
